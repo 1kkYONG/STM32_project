@@ -1,0 +1,26 @@
+# Build folders
+Debug/
+Release/
+build/
+hello/
+
+# Compiler outputs
+*.o
+*.d
+*.elf
+*.map
+*.bin
+*.hex
+*.srec
+*.lst
+
+# IDE / workspace
+.settings/
+.metadata/
+*.launch
+.vscode/
+.idea/
+
+# OS junk
+.DS_Store
+Thumbs.db
