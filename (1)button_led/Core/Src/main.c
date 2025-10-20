@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "OLED.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -30,22 +31,23 @@ static void MX_GPIO_Init(void){
 	GPIO_InitTypeDef gpio_out = {0};
 	GPIO_InitTypeDef gpio_int = {0};
 
-	__HAL_RCC_GPIOA_CLK_ENABLE();
+	__HAL_RCC_GPIOB_CLK_ENABLE();
 
-	gpio_out.Pin = GPIO_PIN_0 | GPIO_PIN_1 ;
+
+	gpio_out.Pin = GPIO_PIN_12  ;
 	gpio_out.Mode = GPIO_MODE_OUTPUT_PP ;
 	gpio_out.Pull = GPIO_NOPULL ;
 	gpio_out.Speed = GPIO_SPEED_FREQ_LOW ;
 
-	HAL_GPIO_Init(GPIOA, &gpio_out);
+	HAL_GPIO_Init(GPIOB, &gpio_out);
 
 
-	gpio_int.Pin = GPIO_PIN_5 | GPIO_PIN_7 ;
+	gpio_int.Pin = GPIO_PIN_13 ;
 	gpio_int.Mode = GPIO_MODE_INPUT ;
 	gpio_int.Pull = GPIO_PULLUP ;
 	gpio_int.Speed = GPIO_SPEED_FREQ_LOW ;
 
-	HAL_GPIO_Init(GPIOA, &gpio_int);
+	HAL_GPIO_Init(GPIOB, &gpio_int);
 }
 /* USER CODE END PTD */
 
@@ -101,13 +103,12 @@ int main(void)
 
   /* USER CODE BEGIN SysInit */
   MX_GPIO_Init();
+  OLED_Init();
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   /* USER CODE BEGIN 2 */
-  int led_1 = 0, led_2 = 0;
-  GPIO_PinState button_pre1 = GPIO_PIN_SET;
-  GPIO_PinState button_pre2 = GPIO_PIN_SET;
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -115,27 +116,13 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  GPIO_PinState button_now1 = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_5);
-	  GPIO_PinState button_now2 = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_7);
-	  if (button_now1 == GPIO_PIN_RESET && button_pre1 == GPIO_PIN_SET ){
-		  HAL_Delay(20);
-		  if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_5) == GPIO_PIN_RESET){
-			  led_1 ^= 1;
-		  }
-	  }
-	  button_pre1 = button_now1;
+	  OLED_ShowChar(1, 1, 'A');
+	  OLED_ShowString(1, 3, "HelloWorld!");
+	  OLED_ShowNum(2, 1, 12345, 5);
+	  OLED_ShowSignedNum(2, 7, -66, 2);
+	  OLED_ShowHexNum(3, 1, 0xAA55, 4);
+	  OLED_ShowBinNum(4, 1, 0xAA55, 16);
 
-
-	  if (button_now2 == GPIO_PIN_RESET && button_pre2 == GPIO_PIN_SET ){
-		  HAL_Delay(20);
-		  if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_7) == GPIO_PIN_RESET){
-			  led_2 ^= 1;
-		  }
-	  }
-	  button_pre2 = button_now2;
-
-	  HAL_GPIO_WritePin(GPIOA , GPIO_PIN_0, led_1 ? GPIO_PIN_RESET : GPIO_PIN_SET);
-	  HAL_GPIO_WritePin(GPIOA , GPIO_PIN_1, led_2 ? GPIO_PIN_RESET : GPIO_PIN_SET);
 
 
     /* USER CODE BEGIN 3 */
