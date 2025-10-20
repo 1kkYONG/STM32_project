@@ -1,1 +1,11 @@
+this in stm32f1xx_it.h
 
+void EXTI15_10_IRQHandler(void)
+{
+    HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_14);
+}
+EXTI → NVIC (IRQ#40)
+NVIC → CPU (jump to EXTI15_10_IRQHandler)
+CPU → runs void EXTI15_10_IRQHandler(void)
+ISR → calls HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_14)
+HAL → clears flag + calls HAL_GPIO_EXTI_Callback()
